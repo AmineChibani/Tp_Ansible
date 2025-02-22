@@ -1,0 +1,9 @@
+version: '3'
+services:
+  ansible-target:
+    build: .
+    ports:
+      - "2222:22"     # Port pour SSH
+      - "8080:8080"   # Port pour l'application
+    container_name: ansible-target
+    restart: unless-stopped 

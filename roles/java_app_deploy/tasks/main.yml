@@ -1,0 +1,49 @@
+---
+# Installation de Java et des dépendances
+- name: Update apt cache
+  apt:
+    update_cache: yes
+  when: ansible_os_family == "Debian"
+
+- name: Install Java
+  package:
+    name: "openjdk-{{ java_version }}-jdk"
+    state: present
+
+# Création de l'utilisateur et du groupe pour l'application
+- name: Create application group
+  group:
+    name: "{{ app_group }}"
+    state: present
+
+- name: Create application user
+  user:
+    name: "{{ app_user }}"
+    group: "{{ app_group }}"
+    shell: /bin/bash
+    home: "{{ app_home }}"
+    create_home: yes
+
+# Création du répertoire de l'application
+- name: Create application directory
+  file:
+    path: "{{ app_home }}"
+    state: directory
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: '0755'
+
+# Copie du fichier JAR
+- name: Copy JAR file
+  copy:
+    src: "files/{{ jar_file }}"
+    dest: "{{ app_home }}/{{ jar_file }}"
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: '0644'
+
+# Démarrage de l'application
+- name: Start Java application
+  shell: "nohup java -jar {{ app_home }}/{{ jar_file }} --server.port={{ app_port }} > {{ app_home }}/app.log 2>&1 &"
+  become: yes
+  become_user: "{{ app_user }}" 

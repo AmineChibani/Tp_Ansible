@@ -1,0 +1,20 @@
+# Ce playbook déploie une application Java sur le serveur
+# Créé par Mohammed Amine Chibani - TP Ansible
+---
+- name: Deploy Java Application
+  hosts: java_servers
+  become: yes
+  vars:
+    # Variables nécessaires pour le déploiement
+    java_version: "11"
+    app_port: 8080
+    app_name: "myapp"
+    app_version: "1.0.0"
+    app_user: "appuser"
+    app_group: "appgroup"
+    app_home: "/opt/{{ app_name }}"
+    jar_file: "{{ app_name }}-{{ app_version }}.jar"
+
+  roles:
+    # Rôle contenant toutes les tâches de déploiement
+    - java_app_deploy 

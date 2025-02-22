@@ -1,0 +1,14 @@
+[Unit]
+Description={{ app_name }} service
+After=network.target
+
+[Service]
+Type=simple
+User={{ app_user }}
+Group={{ app_group }}
+WorkingDirectory={{ app_home }}
+ExecStart=/usr/bin/java -jar {{ app_home }}/{{ jar_file }} --server.port={{ app_port }}
+Restart=always
+
+[Install]
+WantedBy=multi-user.target 

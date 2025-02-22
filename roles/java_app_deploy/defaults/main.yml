@@ -1,0 +1,16 @@
+---
+# Version de Java à installer
+java_version: "11"
+
+# Configuration de l'application
+app_name: "myapp"
+app_version: "1.0.0"
+app_port: 8080
+
+# Configuration de l'utilisateur et du groupe
+app_user: "appuser"
+app_group: "appgroup"
+app_home: "/opt/{{ app_name }}"
+
+# Nom du fichier JAR
+jar_file: "{{ app_name }}-{{ app_version }}.jar" 
